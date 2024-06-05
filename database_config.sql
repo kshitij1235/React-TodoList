@@ -6,7 +6,9 @@ CREATE TABLE `todo`.`tbltasks` (`t_id` INT NOT NULL AUTO_INCREMENT , `task` VARC
 
 
 CREATE TABLE `todo`.`tblpriority` (`p_id` INT NOT NULL AUTO_INCREMENT , `priority` VARCHAR(50) NOT NULL , PRIMARY KEY (`p_id`)) ENGINE = InnoDB;
-INSERT INTO `tblpriority` (`p_id`, `priority`) VALUES ('1', 'default');
-INSERT INTO `tblpriority` (`p_id`, `priority`) VALUES ('2', 'low');
-INSERT INTO `tblpriority` (`p_id`, `priority`) VALUES ('3', 'high');
-INSERT INTO `tblpriority` (`p_id`, `priority`) VALUES ('4', 'imeddiate');
+ALTER TABLE tblpriority
+ADD color VARCHAR(255) NOT NULL;
+INSERT INTO `tblpriority` (`p_id`, `priority`,`color`) VALUES ('1', 'default','#D2E3C9');
+INSERT INTO `tblpriority` (`p_id`, `priority`,`color`) VALUES ('2', 'low','#B5DDE0');
+INSERT INTO `tblpriority` (`p_id`, `priority`,`color`) VALUES ('3', 'high','#F6D5B5');
+INSERT INTO `tblpriority` (`p_id`, `priority`,`color`) VALUES ('4', 'imeddiate','#FBD4CE');

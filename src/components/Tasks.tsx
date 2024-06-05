@@ -1,19 +1,33 @@
 import React, { useEffect, useState } from "react";
 import Toggle from "./Toggle";
+import axios from "axios";
+import PriorityModel from "../Interfaces/Priority";
 
 const TaskView: React.FC = () => {
-
-
+  const [data, setData] = useState<PriorityModel[]>([]);
+  useEffect(() => {
+    axios
+      .get<PriorityModel[]>(`http://localhost:3001/api/priority`)
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the data!", error);
+      });
+  }, []);
   return (
-    <div className="container mx-auto px-4 py-3">
+
+
+    <div className="containe-fluid mx-auto px-4 py-3">
       <h1 className="text-center">Tasks</h1>
 
-      <Toggle priority={1} color={"#D2E3C9"} label={"default"} />
-      <Toggle priority={2} color={"#B5DDE0"} label={"low"} />
-      <Toggle priority={3} color={"#F6D5B5"} label={"High"} />
-      <Toggle priority={4} color={"#FBD4CE"} label={"Imeddiate"} />
-
-
+      <div className="row">
+        {data.map((item) => (
+          <div key={item.p_id} className="col-md-3">
+            <Toggle priority={item.p_id} color={item.color} label={item.priority} />
+          </div>
+        ))}
+      </div>
 
     </div>
 
@@ -21,3 +35,6 @@ const TaskView: React.FC = () => {
 };
 
 export default TaskView;
+
+
+

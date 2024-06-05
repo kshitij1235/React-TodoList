@@ -2,6 +2,7 @@ import express from 'express';
 import mysql from 'mysql2';
 import cors from 'cors';
 
+//#region config database
 const app = express();
 const port = 3001;
 const db = mysql.createConnection({
@@ -22,6 +23,8 @@ db.connect(err => {
 app.use(express.json());
 app.use(cors());
 
+//#endregion
+
 //#region Retrive query 
 
 app.get('/api/tasks/:priority', (req, res) => {
@@ -39,9 +42,13 @@ app.get('/api/tasks/:priority', (req, res) => {
   });
 });
 
-app.get('/api/data', (req, res) => {
-  db.query('SELECT * FROM tbltasks', (err, results) => {
+app.get('/api/priority', (req, res) => {
+  console.log('Received request for all priorities:');
+
+  const query = 'SELECT * FROM tblpriority';
+  db.query(query, (err, results) => {
     if (err) {
+      console.error('Error executing query:', err);
       res.status(500).send(err);
     } else {
       res.json(results);
@@ -49,8 +56,14 @@ app.get('/api/data', (req, res) => {
   });
 });
 
+
 //#endregion
 
+//#region  Insert Task
+
+
+
+//#endregion
 
 
 app.listen(port, () => {
