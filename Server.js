@@ -4,8 +4,6 @@ import cors from 'cors';
 
 const app = express();
 const port = 3001;
-
-// Create a connection to the database
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -13,7 +11,6 @@ const db = mysql.createConnection({
   database: 'todo'
 });
 
-// Connect to the database
 db.connect(err => {
   if (err) {
     console.error('Error connecting to the database:', err);
@@ -22,15 +19,28 @@ db.connect(err => {
   console.log('Connected to the database');
 });
 
-// Middleware to parse JSON bodies
 app.use(express.json());
-
-// Enable CORS for all routes
 app.use(cors());
 
-// Define a simple route
+//#region Retrive query 
+
+app.get('/api/tasks/:priority', (req, res) => {
+  console.log('Received request for priority:', req.params.priority);
+  const priority = req.params.priority;
+
+  const query = 'SELECT * FROM tbltasks WHERE priority = ?';
+  db.query(query, [priority], (err, results) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      res.status(500).send(err);
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 app.get('/api/data', (req, res) => {
-  db.query('SELECT * FROM tasks', (err, results) => {
+  db.query('SELECT * FROM tbltasks', (err, results) => {
     if (err) {
       res.status(500).send(err);
     } else {
@@ -39,7 +49,10 @@ app.get('/api/data', (req, res) => {
   });
 });
 
-// Start the server
+//#endregion
+
+
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
