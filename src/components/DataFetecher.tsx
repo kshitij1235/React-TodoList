@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 function FetchFromAPI(model: any, api_url: any) {
     const [data, setData] = useState<any[]>([]);
