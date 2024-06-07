@@ -3,6 +3,7 @@ import axios from "axios";
 import TaskModel from "../Interfaces/Task";
 import AddButton from "./AddTaskForm";
 import UpdateStatus from "../helper/UpdateStatus";
+import DeleteTask from "../helper/DeleteTask";
 
 function Toggle(props: { priority: any, color: any, label: any }) {
     const [data, setData] = useState<TaskModel[]>([]);
@@ -23,7 +24,7 @@ function Toggle(props: { priority: any, color: any, label: any }) {
             });
     };
 
-    const handleStatusToggle = (taskId:any) => {
+    const handleStatusToggle = (taskId: any) => {
         UpdateStatus(taskId)
             .then(() => {
                 setData(prevData =>
@@ -37,6 +38,10 @@ function Toggle(props: { priority: any, color: any, label: any }) {
             });
     };
 
+    const handleDeleteTask = async (taskId: any) => {
+        await DeleteTask(taskId, fetchTasks);
+    };
+
     return (
         <div className="col">
             <div className="accordion py-2" id={`accordionPanelsStayOpenExample-${props.priority}`}>
@@ -44,7 +49,7 @@ function Toggle(props: { priority: any, color: any, label: any }) {
                     <h2 className="accordion-header">
                         <button
                             className="accordion-button position-relative"
-                            style={{ backgroundColor: isCollapsed ? props.color : 'initial' }} 
+                            style={{ backgroundColor: isCollapsed ? props.color : 'initial' }}
                             type="button"
                             data-bs-toggle="collapse"
                             data-bs-target={`#panelsStayOpen-collapse${props.priority}`}
@@ -67,7 +72,7 @@ function Toggle(props: { priority: any, color: any, label: any }) {
                         <div className="accordion-body">
                             <ul className="list-group">
                                 {data.length > 0 ? (
-                                    data.map((item, index) => (
+                                    data.map((item) => (
                                         <li
                                             className="list-group-item d-flex justify-content-between align-items-center"
                                             key={item.t_id}
@@ -86,12 +91,16 @@ function Toggle(props: { priority: any, color: any, label: any }) {
                                                 />
                                                 <span className="flex-grow-1">{item.task}</span>
                                                 <span className="px-3">
+                                                    {new Date(item.current_data).toLocaleDateString()}
+                                                </span>
+                                                <span className="px-3">
                                                     <button
                                                         type="button"
                                                         className="btn btn-primary"
-                                                        style={{ backgroundColor: props.color, color: '#000000' }} 
+                                                        style={{ backgroundColor: props.color, color: '#000000' }}
+                                                        onClick={() => handleDeleteTask(item.t_id)}
                                                     >
-                                                        {new Date(item.current_data).toLocaleDateString()}
+                                                        Delete
                                                     </button>
                                                 </span>
                                             </label>
@@ -102,7 +111,7 @@ function Toggle(props: { priority: any, color: any, label: any }) {
                                         <h3 className="text-center">No tasks here</h3>
                                     </li>
                                 )}
-                                <AddButton color={props.color}></AddButton>
+                                <AddButton color={props.color} />
                             </ul>
                         </div>
                     </div>

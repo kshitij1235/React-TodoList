@@ -28,7 +28,7 @@ app.use(cors());
 // Retrieve tasks by priority
 app.get('/api/tasks/:priority', (req, res) => {
   const priority = req.params.priority;
-  const query = 'SELECT * FROM tbltasks WHERE priority = ?';
+  const query = 'SELECT * FROM tbltasks WHERE priority = ? AND hide = FALSE';
   db.query(query, [priority], (err, results) => {
     if (err) {
       console.error('Error retrieving tasks by priority:', err);
@@ -65,6 +65,27 @@ app.get('/api/update_status/:id', (req, res) => {
     }
   });
 });
+
+
+app.delete('/api/delete/task/:id', (req, res) => {
+    const taskId = req.params.id;
+    // Your logic to delete the task from the database
+    // Ensure taskId is properly handled and checked
+    // For example:
+    const sql = "DELETE FROM tbltasks WHERE t_id = ?";
+    db.query(sql, [taskId], (err, result) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).send("Task not found");
+        }
+        res.send(result);
+    });
+});
+
+
+
 
 // Insert a new task
 app.post('/api/tasks', (req, res) => {
