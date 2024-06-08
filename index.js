@@ -84,6 +84,22 @@ app.delete('/api/delete/task/:id', (req, res) => {
     });
 });
 
+app.delete('/api/delete/priority/:id', (req, res) => {
+  const PriorityId = req.params.id;
+
+  const sql = "DELETE FROM tblpriority WHERE p_id = ?";
+  db.query(sql, [PriorityId], (err, result) => {
+      if (err) {
+          return res.status(500).send(err);
+      }
+      if (result.affectedRows === 0) {
+          return res.status(404).send("Priority not found");
+      }
+      res.send(result);
+  });
+});
+
+
 // Insert a new task
 app.post('/api/tasks', (req, res) => {
   const { task, endDate, priority } = req.body;

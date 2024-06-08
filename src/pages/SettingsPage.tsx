@@ -1,12 +1,8 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-
-// Assuming PriorityModel is an interface with properties `priority` and `color`.
-interface PriorityModel {
-    priority: string;
-    color: string;
-}
+import NavigationBar from '../components/Navigation';
+import PriorityModel from '../Interfaces/Priority';
 
 const SettingsPage = () => {
     const [tags, setTags] = useState<PriorityModel[]>([]);
@@ -30,7 +26,6 @@ const SettingsPage = () => {
             axios
                 .post('http://localhost:3001/api/priority', newTag)
                 .then((response) => {
-                    // Assuming the API returns the added tag
                     setTags([...tags, response.data]);
                     setTagInput('');
                     setColorInput('#000000');
@@ -41,8 +36,21 @@ const SettingsPage = () => {
         }
     };
 
+    const deleteTag = (id: number) => {
+        console.log("lamo");
+        axios
+            .delete(`http://localhost:3001/api/delete/priority/${id}`)
+            .then((response) => {
+                setTags(response.data);
+            })
+            .catch((error) => {
+                console.error('There was an error fetching the data!', error);
+            });
+    };
+
     return (
         <Fragment>
+            <NavigationBar />
             <div className="container mt-5">
                 <h2>Settings</h2>
                 <form onSubmit={(e) => e.preventDefault()}>
@@ -78,18 +86,25 @@ const SettingsPage = () => {
                         </div>
                     </div>
 
-                    {/* Display Tags */}
+                    
                     <div className="card mb-4">
                         <div className="card-header">Tags</div>
                         <div className="card-body">
                             <ul className="list-group">
                                 {tags.map((tag, index) => (
+                                    
                                     <li
                                         key={index}
-                                        className="list-group-item"
+                                        className="list-group-item d-flex justify-content-between align-items-center"
                                         style={{ backgroundColor: tag.color, color: '#fff' }}
                                     >
                                         {tag.priority}
+                                        <button
+                                            className="btn btn-danger btn-sm"
+                                            onClick={() => deleteTag(tag.p_id)}
+                                        >
+                                            Delete
+                                        </button>
                                     </li>
                                 ))}
                             </ul>
