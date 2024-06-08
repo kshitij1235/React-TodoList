@@ -1,14 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import DisplayTask from './components/Tasks'
 import 'bootstrap/dist/css/bootstrap.css'
-import NavigationBar from './components/Navigation'
-import TaskView from './components/Tasks'
-
+import { BrowserRouter } from 'react-router-dom'
+import App from './App'
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 
   <React.StrictMode>
-    <NavigationBar></NavigationBar>
-    <TaskView></TaskView>
+    <BrowserRouter>
+      <App></App>
+    </BrowserRouter>
   </React.StrictMode>,
 )

@@ -28,7 +28,7 @@ app.use(cors());
 // Retrieve tasks by priority
 app.get('/api/tasks/:priority', (req, res) => {
   const priority = req.params.priority;
-  const query = 'SELECT * FROM tbltasks WHERE priority = ? AND hide = FALSE';
+  const query = 'SELECT * FROM tbltasks WHERE priority = ? AND hide = FALSE ';
   db.query(query, [priority], (err, results) => {
     if (err) {
       console.error('Error retrieving tasks by priority:', err);
@@ -84,13 +84,10 @@ app.delete('/api/delete/task/:id', (req, res) => {
     });
 });
 
-
-
-
 // Insert a new task
 app.post('/api/tasks', (req, res) => {
   const { task, endDate, priority } = req.body;
-  const query = 'INSERT INTO tbltasks (task, end_date, priority, status) VALUES (?, ?, ?, 0)';
+  const query = 'INSERT INTO tbltasks (task, end_date, priority, status,hide) VALUES (?, ?, ?, 0,0)';
   console.log("adding in task")
   db.query(query, [task, endDate, priority], (err, results) => {
     if (err) {
@@ -103,6 +100,23 @@ app.post('/api/tasks', (req, res) => {
     }
   });
 });
+
+app.post('/api/priority', (req, res) => {
+  const { priority,color } = req.body;
+  const query = 'INSERT INTO tblpriority (priority,color) VALUES (?, ?)';
+  console.log("adding priority")
+  db.query(query, [priority,color], (err, results) => {
+    if (err) {
+      console.error('Error inserting task:', err);
+      res.status(500).send(err);
+    } else {
+      console.log('tag inserted successfully.');
+      console.log('Inserted ID:', results.insertId);
+      res.json(results);
+    }
+  });
+});
+
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
