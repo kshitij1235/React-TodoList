@@ -1,41 +1,21 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import PriorityModel from "../Interfaces/Priority";
+import GetPriority from "../GetterSetter/GetPriority";
+import SubmitTask from "../GetterSetter/SubmitTask";
 
 function AddButton(props: { color: any }) {
     const [showModal, setShowModal] = useState(false);
-    const [data, setData] = useState<PriorityModel[]>([]);
-
-    useEffect(() => {
-        fetchTasks();
-    }, []);
-
     const [formData, setFormData] = useState({
         task: '',
         endDate: '',
         priority: ''
     });
-
-    const fetchTasks = () => {
-        axios
-            .get<PriorityModel[]>(`http://localhost:3001/api/priority`)
-            .then((response) => {
-                setData(response.data);
-            })
-            .catch((error) => {
-                console.error("There was an error fetching the data!", error);
-            });
-    };
-
     const openModal = () => setShowModal(true);
     const closeModal = () => setShowModal(false);
-
-
-
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log(formData)
-        sendDataToServer(formData);
+        SubmitTask(formData);
     };
 
     return (
@@ -91,7 +71,7 @@ function AddButton(props: { color: any }) {
                                         onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
                                     >
                                         <option value="">Select priority</option>
-                                        {data.map((item) => (
+                                        {GetPriority().map((item) => (
                                             <option key={item.p_id} value={item.p_id}>{item.priority}</option>
                                         ))}
                                     </select>
@@ -107,19 +87,6 @@ function AddButton(props: { color: any }) {
         </>
     );
 }
-
-
-const sendDataToServer = (formData: any) => {
-    axios.post('http://localhost:3001/api/tasks', formData)
-        .then(response => {
-            console.log('Data submitted successfully:', response.data);
-            window.location.reload(); // Reload the page
-        })
-        .catch(error => {
-            console.error('Error submitting data:', error);
-        });
-};
-
 
 
 export default AddButton;
