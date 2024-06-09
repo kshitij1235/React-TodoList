@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
+import NavigationBar from '../components/Navigation';
 
 // Assuming PriorityModel is an interface with properties `priority` and `color`.
 interface PriorityModel {
@@ -43,6 +44,7 @@ const SettingsPage = () => {
 
     return (
         <Fragment>
+            <NavigationBar/>
             <div className="container mt-5">
                 <h2>Settings</h2>
                 <form onSubmit={(e) => e.preventDefault()}>
