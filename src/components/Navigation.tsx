@@ -6,11 +6,9 @@ function NavigationBar() {
         <Fragment>
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container-fluid">
-<<<<<<< HEAD
+
                     <a className="navbar-brand" href="/">TASKUS</a>
-=======
-                    <a className="navbar-brand" href="/">TasksManager</a>
->>>>>>> ddb6b644b748596b0fe500c82d09e89e436e65fc
+
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>

@@ -5,13 +5,8 @@ import bodyParser from 'body-parser';
 
 const app = express();
 const port = 3001;
-
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'todo'
-});
+const DB = `mysql://${{MYSQLUSER}}:${{MYSQL_ROOT_PASSWORD}}@${{RAILWAY_TCP_PROXY_DOMAIN}}:${{RAILWAY_TCP_PROXY_PORT}}/${{MYSQL_DATABASE}}`
+const db = mysql.createConnection(DB);
 
 db.connect(err => {
   if (err) {
